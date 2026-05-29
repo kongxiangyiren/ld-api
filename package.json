@@ -1,0 +1,49 @@
+{
+  "name": "@kongxiangyiren/ld-api",
+  "type": "module",
+  "version": "0.0.1",
+  "description": "本地扩散模型（Local Diffusion）HTTP API 的 Node.js / TypeScript 客户端，支持文生图、图生图、inpaint 以及扩散过程预览。",
+  "author": "空巷一人",
+  "license": "MIT",
+  "homepage": "https://github.com/kongxiangyiren/ld-api#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kongxiangyiren/ld-api.git"
+  },
+  "bugs": {
+    "url": "https://github.com/kongxiangyiren/ld-api/issues"
+  },
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsdown",
+    "dev": "tsdown --watch",
+    "test": "vitest",
+    "typecheck": "tsc --noEmit",
+    "release": "bumpp",
+    "prepublishOnly": "pnpm run build"
+  },
+  "devDependencies": {
+    "@types/node": "^25.6.2",
+    "@typescript/native-preview": "7.0.0-dev.20260509.2",
+    "bumpp": "^11.1.0",
+    "tsdown": "^0.22.0",
+    "typescript": "^6.0.3",
+    "vitest": "^4.1.5"
+  },
+  "dependencies": {
+    "axios": "^1.16.1",
+    "sharp": "^0.34.5"
+  },
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.cts"
+}
