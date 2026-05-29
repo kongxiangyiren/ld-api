@@ -5,7 +5,7 @@
 ## 安装
 
 ```bash
-npm install @kongxiangyiren/ld-api
+npm install @kongxiangyiren/ld-api sharp
 ```
 
 ## 快速开始
