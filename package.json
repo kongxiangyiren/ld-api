@@ -1,7 +1,7 @@
 {
   "name": "@kongxiangyiren/ld-api",
   "type": "module",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "本地扩散模型（Local Diffusion）HTTP API 的 Node.js / TypeScript 客户端，支持文生图、图生图、inpaint 以及扩散过程预览。",
   "author": "空巷一人",
   "license": "MIT",
