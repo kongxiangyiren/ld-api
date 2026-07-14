@@ -8,6 +8,50 @@
 npm install @kongxiangyiren/ld-api sharp
 ```
 
+## 设备互联
+
+> 注意：需要开启设备互联 (2.8.1支持)
+
+```ts
+import { LdApi } from '@kongxiangyiren/ld-api';
+
+const model = new LdApi('http://127.0.0.1:8808', 30000);
+
+// 获取信息
+// await model.getInfo()
+
+// 获取模型列表
+const models = await api.getModels();
+const presence_size = models.models[0].resolutions.length !== 0;
+
+// 选择模型
+const select_model = await api.selectModel(
+  models.models[0].id,
+  presence_size ? models.models[0].resolutions[0][0] : 1024,
+  presence_size ? models.models[0].resolutions[0][1] : 1024
+);
+
+if (!select_model.ok) {
+  throw new Error('模型选择失败');
+}
+
+// 获取状态
+const status = await api.getStatus();
+
+if (status.state !== 'running') {
+  throw new Error('模型未就绪');
+}
+const { width, height } = status;
+// 生成图片
+// 参考 快速开始
+
+// 停止模型
+const stop = await models.stop(models.models[0].id);
+if (!stop.ok) {
+  throw new Error('模型停止失败');
+}
+```
+
 ## 快速开始
 
 ```ts

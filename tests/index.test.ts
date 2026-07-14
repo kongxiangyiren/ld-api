@@ -4,10 +4,7 @@ import { type ErrorEvent, LdApi } from '../src/index';
 import sharp from 'sharp';
 import { join } from 'node:path';
 
-const BASE_URL = 'http://192.168.1.34:8081';
-
 beforeAll(() => {
-  console.log(`Testing against ${BASE_URL}`);
   rmSync('output', {
     recursive: true,
     force: true
@@ -17,7 +14,56 @@ beforeAll(() => {
   });
 });
 
+describe('getInfo', () => {
+  const BASE_URL = 'http://192.168.1.40:8808';
+  const api = new LdApi(BASE_URL, 10000);
+
+  test('returns info', { timeout: 10000 }, async () => {
+    const result = await api.getInfo();
+    expect(result.app).toBe('localdream');
+    expect(result.protocol).toBe(1);
+    expect(result.version).toBeTypeOf('string');
+    expect(result.device).toBeTypeOf('string');
+  });
+});
+
+describe('getModels', () => {
+  const BASE_URL = 'http://192.168.1.40:8808';
+  const api = new LdApi(BASE_URL, 10000);
+
+  test('returns models', { timeout: 10000 }, async () => {
+    const result = await api.getModels();
+    expect(result.use_img2img).toBeTypeOf('boolean');
+    expect(result.models).toBeTypeOf('object');
+  });
+});
+
+describe('selectModel', () => {
+  const BASE_URL = 'http://192.168.1.40:8808';
+  const api = new LdApi(BASE_URL, 10000);
+  test('select model', { timeout: 10000 }, async () => {
+    const models = await api.getModels();
+    const presence_size = models.models[0].resolutions.length !== 0;
+    const result = await api.selectModel(
+      models.models[0].id,
+      presence_size ? models.models[0].resolutions[0][0] : 1024,
+      presence_size ? models.models[0].resolutions[0][1] : 1024
+    );
+    expect(result.ok).toBeTypeOf('boolean');
+  });
+});
+
+describe('status', () => {
+  const BASE_URL = 'http://192.168.1.40:8808';
+  const api = new LdApi(BASE_URL, 10000);
+  test('status', { timeout: 10000 }, async () => {
+    const result = await api.getStatus();
+    expect(result.state).toBeTypeOf('string');
+  });
+});
+
 describe('generateImage', () => {
+  const BASE_URL = 'http://192.168.1.40:8081';
   const api = new LdApi(BASE_URL, 30000);
 
   test('generates an image with basic params', { timeout: 120000 }, async () => {
@@ -181,11 +227,26 @@ describe('generateImage', () => {
 });
 
 describe('tokenize', () => {
+  const BASE_URL = 'http://192.168.1.40:8081';
   const api = new LdApi(BASE_URL, 10000);
 
   test('returns token count ', { timeout: 10000 }, async () => {
     const result = await api.tokenize('1girl, masterpiece');
     expect(result.count).toBeGreaterThan(0);
     expect(result.max_length).toBe(77);
+  });
+});
+
+describe('stop', () => {
+  const BASE_URL = 'http://192.168.1.40:8808';
+  const api = new LdApi(BASE_URL, 10000);
+
+  test('stop', { timeout: 10000 }, async () => {
+    const status = await api.getStatus();
+    console.log(status.state);
+    if (status.state === 'running' && status.serving_model_id) {
+      const result = await api.stop(status.serving_model_id);
+      expect(result.ok).toBeTypeOf('boolean');
+    }
   });
 });

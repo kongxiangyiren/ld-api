@@ -41,6 +41,35 @@ export interface GenerateImageOptions {
   onProgress?: (event: ProgressEvent) => void;
 }
 
+export interface Module {
+  id: string;
+  name: string;
+  description: string;
+  run_on_cpu: boolean;
+  is_sdxl: boolean;
+  is_anima: boolean;
+  is_custom: boolean;
+  generation_size: number;
+  defaults: {
+    prompt: string;
+    negative_prompt: string;
+    steps: number;
+    cfg: number;
+    scheduler:
+      | 'dpm'
+      | 'dpm_karras'
+      | 'dpm_sde'
+      | 'dpm_sde_karras'
+      | 'euler_a'
+      | 'eulera'
+      | 'euler_a_karras'
+      | 'euler'
+      | 'euler_karras'
+      | 'lcm';
+  };
+  resolutions: Array<[number, number]> | [];
+}
+
 // ── Client ──
 
 export class LdApi {
@@ -151,6 +180,58 @@ export class LdApi {
         }
       });
     });
+  }
+
+  async getInfo() {
+    const { data } = await this.$axios.post<{
+      app: 'localdream';
+      version: string;
+      protocol: 1;
+      device: string;
+    }>('/info');
+    return data;
+  }
+
+  async getModels() {
+    const { data } = await this.$axios.get<{
+      use_img2img: boolean;
+      models: Array<Module>;
+      upscalers: any[];
+    }>('/models');
+    return data;
+  }
+
+  async selectModel(model_id: string, width: number, height: number) {
+    const { data } = await this.$axios.post<{
+      ok: boolean;
+    }>('/select', {
+      model_id,
+      width,
+      height
+    });
+    return data;
+  }
+
+  async getStatus() {
+    const { data } = await this.$axios.get<{
+      serving_model_id: string | null;
+      state: 'idle' | 'starting' | 'running' | 'error';
+      message: string | null;
+      error_model_id: string | null;
+      width: number | null;
+      height?: number | null;
+    }>('/status');
+    return data;
+  }
+
+  async stop(model_id: string) {
+    const { data } = await this.$axios.post<{
+      ok: boolean;
+      ignored?: boolean;
+    }>('/stop', {
+      model_id
+    });
+    return data;
   }
 }
 
