@@ -35,6 +35,7 @@ export interface GenerateImageResult extends CompleteEvent {}
 export interface TokenizeResult {
   count: number;
   max_length: number;
+  overflow_offset: number;
 }
 
 export interface GenerateImageOptions {

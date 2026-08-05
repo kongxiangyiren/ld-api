@@ -31,7 +31,7 @@ interface BaseParams {
   /**
    * @description 采样方法
    * @default 'dpm'
-   * 
+   *
    * `dpm`: `DPM++ 2M Karras`
    *
    * `dpm_karras`: `DPM++ 2M + Karras`
