@@ -1,3 +1,40 @@
+// ── Shared enums ──
+
+/**
+ * @description 采样方法
+ *
+ * `dpm`: `DPM++ 2M Karras`
+ *
+ * `dpm_karras`: `DPM++ 2M + Karras`
+ *
+ * `dpm_sde`: `DPM++ 2M SDE`
+ *
+ * `dpm_sde_karras`: `DPM++ 2M SDE + Karras`
+ *
+ * `euler_a` | `eulera`: `Euler A`
+ *
+ * `euler_a_karras`: `Euler A + Karras`
+ *
+ * `euler`: `Euler`
+ *
+ * `euler_karras`: `Euler + Karras`
+ *
+ * `lcm`: `LCM`（不支持 Karras）
+ *
+ * 未知值会回退到 `dpm`。
+ */
+export type Scheduler =
+  | 'dpm'
+  | 'dpm_karras'
+  | 'dpm_sde'
+  | 'dpm_sde_karras'
+  | 'euler_a'
+  | 'eulera'
+  | 'euler_a_karras'
+  | 'euler'
+  | 'euler_karras'
+  | 'lcm';
+
 // ── Base shared fields ──
 
 interface BaseParams {
@@ -31,36 +68,9 @@ interface BaseParams {
   /**
    * @description 采样方法
    * @default 'dpm'
-   *
-   * `dpm`: `DPM++ 2M Karras`
-   *
-   * `dpm_karras`: `DPM++ 2M + Karras`
-   *
-   * `dpm_sde`: `DPM++ 2M SDE`
-   *
-   * `dpm_sde_karras`: `DPM++ 2M SDE + Karras`
-   *
-   * `euler_a` | `eulera`: `Euler A`
-   *
-   * `euler_a_karras`: `Euler A + Karras`
-   *
-   * `euler`: `Euler`
-   *
-   * `euler_karras`: `Euler + Karras`
-   *
-   * `lcm`: `LCM`
+   * @see Scheduler
    */
-  scheduler?:
-    | 'dpm'
-    | 'dpm_karras'
-    | 'dpm_sde'
-    | 'dpm_sde_karras'
-    | 'euler_a'
-    | 'eulera'
-    | 'euler_a_karras'
-    | 'euler'
-    | 'euler_karras'
-    | 'lcm';
+  scheduler?: Scheduler;
 
   /**
    * @description 仅 CPU 模式有效

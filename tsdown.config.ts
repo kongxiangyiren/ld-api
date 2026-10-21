@@ -2,10 +2,9 @@ import { defineConfig } from 'tsdown';
 
 export default defineConfig({
   dts: {
-    tsgo: true
+    generator: 'tsgo'
   },
   exports: true,
-  // ...config options
   platform: 'neutral',
   minify: true,
   format: ['cjs', 'es']
