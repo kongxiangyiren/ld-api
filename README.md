@@ -248,7 +248,7 @@ await device.selectModel('不存在的模型', 512, 512).catch(error => {
 | `prompt`                 | `string`  | -       | **必填**。正向提示词                             |
 | `negative_prompt`        | `string`  | `""`    | 反向提示词                                       |
 | `steps`                  | `number`  | `20`    | 采样步数                                         |
-| `seed`                   | `number`  | `-1`    | 随机种子（-1 为随机）                            |
+| `seed`                   | `number`  | 随机    | 随机种子（uint32）。**省略才随机**，传 `-1` 会变成固定种子 4294967295 |
 | `cfg`                    | `number`  | `7.5`   | CFG 系数                                         |
 | `size`                   | `number`  | `512`   | 正方形输出尺寸                                   |
 | `width`                  | `number`  | `512`   | 输出宽度                                         |

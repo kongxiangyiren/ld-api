@@ -60,8 +60,9 @@ interface BaseParams {
    */
   cfg?: number;
   /**
-   * @description 随机种子。
-   * @default -1
+   * @description 随机种子，uint32（0 ~ 4294967295）。
+   * 省略则后端随机生成；不要用 -1 表示随机——它会被当成 4294967295 这个固定种子。
+   * @default 省略则随机
    * @example 42
    */
   seed?: number;
